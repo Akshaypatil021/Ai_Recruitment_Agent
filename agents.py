@@ -412,7 +412,7 @@ class ResumeAnalysisAgent:
         
     
 
-    def improve_resume(self, improvement_areas, target_role=""):
+    def get_improve_resume(self, improvement_areas, target_role=""):
         """Generate suggestions to improve the resume"""
         if not self.resume_text:
             return {}
@@ -543,6 +543,17 @@ class ResumeAnalysisAgent:
             print(f"Error generating resume improvements: {e}")
             return {area: {"description": "Error generating suggestions", "specific": []} for area in improvement_areas}
 
-    
+    def cleanup(self):
+        """Clean up temporary files"""
+        try:
+            if hasattr(self, 'resume_file_path') and os.path.exists(self.
+            resume_file_path):
+                os.unlink(self.resume_file_path)
+            
+            if hasattr(self, 'improved_resume_path') and os.path.exists(self.
+            improved_resume_path):
+                os.unlink(self.improved_resume_path)
+        except Exception as e:
+            print(f"Error cleaning up temporary files: {e}")
     
     
