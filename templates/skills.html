@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FairHire AI – Skills Improvement</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    html, body {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1e293b, #020617);
+      color: #e5e7eb;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* TOP BAR */
+    .top-bar {
+      width: 100%;
+      padding: 10px 18px;
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid rgba(30, 64, 175, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(14px);
+    }
+
+    @media (min-width: 960px) {
+      .top-bar {
+        padding: 12px 40px;
+      }
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 20% 10%, #38bdf8, #1d4ed8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #f9fafb;
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.7);
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .logo-title {
+      font-size: 1.05rem;
+      font-weight: 650;
+      letter-spacing: 0.03em;
+    }
+
+    .logo-sub {
+      font-size: 0.7rem;
+      color: #9ca3af;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.86rem;
+    }
+
+    .nav-link {
+      position: relative;
+      padding-bottom: 3px;
+      cursor: pointer;
+      color: #cbd5f5;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background: linear-gradient(90deg, #60a5fa, #38bdf8);
+      transition: width 0.18s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-link.active {
+      color: #f9fafb;
+    }
+
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        display: none;
+      }
+    }
+
+    /* LAYOUT */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 18px 18px 22px;
+      gap: 16px;
+    }
+
+    @media (min-width: 960px) {
+      .main {
+        padding: 22px 40px 26px;
+      }
+    }
+
+    .hero {
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.1fr);
+      gap: 16px;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .hero-left {
+      padding-right: 12px;
+    }
+
+    .hero-badge {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 3px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(96, 165, 250, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 7px;
+      color: #bfdbfe;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.9);
+    }
+
+    .hero-title {
+      font-size: 1.9rem;
+      line-height: 1.25;
+      font-weight: 700;
+      color: #f9fafb;
+      margin-bottom: 6px;
+    }
+
+    @media (min-width: 960px) {
+      .hero-title {
+        font-size: 2.05rem;
+      }
+    }
+
+    .hero-subtitle {
+      font-size: 0.93rem;
+      color: #9ca3af;
+      max-width: 32rem;
+    }
+
+    .hero-subtitle span {
+      color: #a5b4fc;
+      font-weight: 500;
+    }
+
+    .hero-right {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .hero-panel {
+      min-width: 260px;
+      max-width: 380px;
+      width: 100%;
+      border-radius: 20px;
+      padding: 14px 16px;
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent),
+                  rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.9);
+    }
+
+    .hero-panel-title {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #cbd5f5;
+      margin-bottom: 6px;
+    }
+
+    .hero-panel-row {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .hero-panel-row span {
+      color: #e5e7eb;
+      font-weight: 500;
+    }
+
+    .hero-panel-small {
+      font-size: 0.75rem;
+      color: #6b7280;
+      margin-top: 6px;
+    }
+
+    /* CONTENT GRID */
+    .content {
+      max-width: 1100px;
+      width: 100%;
+      margin: 4px auto 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.05), transparent),
+                  rgba(15, 23, 42, 0.95);
+      border-radius: 20px;
+      padding: 18px 16px;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #e5e7eb;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-title span.icon {
+      font-size: 1.05rem;
+    }
+
+    .card-helper {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-bottom: 10px;
+    }
+
+    .pill-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #a5b4fc;
+      margin-bottom: 6px;
+    }
+
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .feature-item span.bullet {
+      font-size: 0.8rem;
+      margin-top: 2px;
+      color: #60a5fa;
+    }
+
+    .section-heading {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #e5e7eb;
+      margin-bottom: 6px;
+    }
+
+    .section-text {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-bottom: 8px;
+    }
+
+    .highlight-box {
+      margin-top: 6px;
+      padding: 10px 10px 8px;
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px dashed rgba(148, 163, 184, 0.6);
+      font-size: 0.8rem;
+      color: #d1d5db;
+    }
+
+    .badge-small {
+      display: inline-block;
+      font-size: 0.7rem;
+      border-radius: 999px;
+      padding: 2px 9px;
+      background: rgba(37, 99, 235, 0.25);
+      border: 1px solid rgba(96, 165, 250, 0.7);
+      color: #bfdbfe;
+      margin-bottom: 4px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 9px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    .status-pill.selected {
+      background: rgba(22, 163, 74, 0.18);
+      border: 1px solid rgba(22, 163, 74, 0.9);
+      color: #bbf7d0;
+    }
+
+    .status-pill.not-selected {
+      background: rgba(220, 38, 38, 0.15);
+      border: 1px solid rgba(248, 113, 113, 0.9);
+      color: #fecaca;
+    }
+
+    .btn-primary {
+      border-radius: 999px;
+      padding: 9px 18px;
+      font-size: 0.85rem;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #2563eb, #38bdf8);
+      color: #f9fafb;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.6);
+      transition: transform 0.1s ease, box-shadow 0.15s ease;
+      margin-top: 6px;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.75);
+      transform: translateY(-1px);
+    }
+
+    .page-footer {
+      width: 100%;
+      padding: 10px 20px 14px;
+      font-size: 0.75rem;
+      text-align: center;
+      color: #6b7280;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- TOP BAR -->
+  <header class="top-bar">
+    <div class="logo-wrap">
+      <div class="logo-mark">FH</div>
+      <div class="logo-text">
+        <span class="logo-title">FairHire AI</span>
+        <span class="logo-sub">Bias-Free ML Recruitment</span>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="nav-link" href="/index.html">Home</a>
+      <a class="nav-link active" href="/skills.html">Skills Improvement</a>
+      <a class="nav-link" id="nav-questions" href="/questions.html">AI Questions</a>
+    </nav>
+  </header>
+
+  <main class="main">
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="hero-left">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          AI Skill Report
+        </div>
+        <h1 class="hero-title">
+          See how the AI model scores your resume and where to grow next.
+        </h1>
+        <p class="hero-subtitle">
+          This page shows a <span>live AI analysis</span> of your uploaded resume –
+          model score, strengths, gaps and a personalised growth plan for your chosen domain.
+        </p>
+      </div>
+      <div class="hero-right">
+        <div class="hero-panel">
+          <div class="hero-panel-title">Current profile snapshot</div>
+          <div class="hero-panel-row">
+            Domain: <span id="hero-domain">–</span>
+          </div>
+          <div class="hero-panel-row">
+            Model decision:
+            <span id="hero-decision">Waiting for analysis…</span>
+          </div>
+          <div class="hero-panel-row">
+            Score:
+            <span id="hero-score">–</span>
+          </div>
+          <div class="hero-panel-row">
+            Profile type:
+            <span id="hero-profile-type">–</span>
+          </div>
+          <p class="hero-panel-small">
+            This summary is generated from your latest resume run through the ML model
+            and the AI skill analysis pipeline.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTENT -->
+    <section class="content">
+      <!-- LEFT: detailed skill report -->
+      <div>
+        <div class="card">
+          <div class="card-title">
+            <span class="icon">📊</span>
+            Skill Improvement Suggestions (AI-based)
+          </div>
+          <p class="card-helper">
+            Below is the live report generated from your resume: model score, strengths,
+            improvement areas and a recommended learning path. All values are calculated
+            from your actual data, not static text.
+          </p>
+
+          <div class="pill-label">Your AI-based report</div>
+          <div class="highlight-box" id="report-info">
+            <p class="section-text">
+              Loading your skill report...
+            </p>
+          </div>
+
+          <!-- score bar -->
+          <div class="section-heading" style="margin-top: 12px;">Model score overview</div>
+          <div class="highlight-box">
+            <div style="font-size:0.78rem; margin-bottom:4px;">
+              This bar shows how close your profile is to the benchmark learned from past resumes.
+            </div>
+            <div style="width:100%; background:rgba(15,23,42,0.9); border-radius:999px; border:1px solid rgba(148,163,184,0.5); padding:2px;">
+              <div id="score-bar-fill"
+                   style="width:0%; height:10px; border-radius:999px;
+                          background: linear-gradient(90deg,#22c55e,#eab308,#ef4444);
+                          transition: width 0.5s ease;">
+              </div>
+            </div>
+            <div id="score-bar-label" style="font-size:0.78rem; margin-top:4px; color:#9ca3af;">
+              Model confidence: –
+            </div>
+          </div>
+
+          <!-- strengths / improvements / suggestions -->
+          <div class="section-heading" style="margin-top: 12px;">Top strengths</div>
+          <ul id="strengths-list" class="feature-list"></ul>
+
+          <div class="section-heading" style="margin-top: 10px;">Improvement areas</div>
+          <ul id="improvements-list" class="feature-list"></ul>
+
+          <div class="section-heading" style="margin-top: 10px;">Suggested next steps</div>
+          <ul id="suggestions-list" class="feature-list"></ul>
+
+          <!-- AI summary -->
+          <div class="section-heading" style="margin-top: 14px;">AI-generated summary</div>
+          <div class="highlight-box" id="ai-summary">
+            <span class="badge-small">Live insight</span>
+            <p class="section-text">
+              Once your report is loaded, this block summarises your overall position and
+              where to focus first.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: flow, bias, traits -->
+      <div>
+        <!-- AI-powered improvement plan -->
+        <div class="card">
+          <div class="card-title">
+            <span class="icon">🧠</span>
+            AI Skill Improvement Flow
+          </div>
+          <p class="card-helper">
+            This module combines your ML model score, detected skills and domain to build
+            a personalised improvement plan. Every time you upload a new resume, this plan
+            refreshes automatically.
+          </p>
+
+          <div class="section-heading">Suggested learning focus</div>
+          <p class="section-text" id="focus-text">
+            Waiting for your report...
+          </p>
+
+          <div class="section-heading" style="margin-top: 10px;">Personality & profile traits</div>
+          <div class="highlight-box">
+            <p class="section-text" style="margin-bottom:4px;">
+              Detected profile type:
+              <strong id="profile-type-label">–</strong>
+            </p>
+            <p class="section-text" style="margin-bottom:4px;">
+              Soft-skill traits detected from your resume:
+            </p>
+            <ul id="traits-list" class="feature-list"></ul>
+          </div>
+
+          <button class="btn-primary" onclick="window.location.href='/questions.html'">
+            → Practice AI interview questions
+          </button>
+        </div>
+
+        <!-- Bias reduction card -->
+        <div class="card" style="margin-top:12px;">
+          <div class="card-title">
+            <span class="icon">🛡️</span>
+            Fair & anonymised analysis
+          </div>
+          <p class="card-helper">
+            Before any scoring or AI generation, FairHire AI removes personally identifiable
+            fields from your resume so the models focus on skills and experience only.
+          </p>
+          <div class="highlight-box" id="bias-box">
+            <p class="section-text" style="margin-bottom:4px;">
+              Identifiers like your <strong>name</strong>, <strong>email</strong> and
+              <strong>phone number</strong> are anonymised (for example:
+              <code>Name: [CANDIDATE NAME]</code>,
+              <code>[EMAIL]</code>,
+              <code>[PHONE]</code>) before being sent to the ML model or the AI assistant.
+            </p>
+            <p class="section-text" style="font-size:0.78rem;">
+              This helps reduce unconscious bias and keeps the analysis focused on what
+              really matters for the role: your skills, projects and impact.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    FairHire AI – Live AI/ML-based skill analysis from your actual resume.
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    function getCandidateIdFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("candidate_id");
+    }
+
+    async function loadSkillReport() {
+      const candidateId = getCandidateIdFromUrl();
+
+      const infoBox = document.getElementById("report-info");
+      const strengthsList = document.getElementById("strengths-list");
+      const improvementsList = document.getElementById("improvements-list");
+      const suggestionsList = document.getElementById("suggestions-list");
+      const scoreBarFill = document.getElementById("score-bar-fill");
+      const scoreBarLabel = document.getElementById("score-bar-label");
+      const aiSummary = document.getElementById("ai-summary");
+      const focusText = document.getElementById("focus-text");
+      const traitsList = document.getElementById("traits-list");
+      const profileTypeLabel = document.getElementById("profile-type-label");
+
+      const heroDomain = document.getElementById("hero-domain");
+      const heroDecision = document.getElementById("hero-decision");
+      const heroScore = document.getElementById("hero-score");
+      const heroProfileType = document.getElementById("hero-profile-type");
+
+      const navQuestions = document.getElementById("nav-questions");
+
+      if (!candidateId) {
+        if (infoBox) {
+          infoBox.innerHTML =
+            "<p class='section-text'>No candidate id found. Please upload your resume from the Home page first.</p>";
+        }
+        if (focusText) {
+          focusText.textContent = "No candidate loaded. Go back to Home and upload your resume.";
+        }
+        return;
+      }
+
+      if (navQuestions) {
+        navQuestions.href = "/questions.html?candidate_id=" + encodeURIComponent(candidateId);
+      }
+
+      try {
+        const res = await fetch("/api/skill_report?candidate_id=" + encodeURIComponent(candidateId));
+        const data = await res.json();
+
+        if (!res.ok) {
+          infoBox.innerHTML =
+            "<p class='section-text'>Could not load report: " +
+            (data.error || "unknown error") + "</p>";
+          return;
+        }
+
+        // ---- NEW: clear shortlisted / not shortlisted message ----
+        const domainLabel = data.domain || "N/A";
+        const rawScore = data.score != null ? data.score : null;
+        const scoreText = rawScore != null ? (rawScore * 100).toFixed(1) + "%" : "N/A";
+        const selected = !!data.selected;
+
+        let decisionLine = "";
+        if (selected) {
+          decisionLine =
+            "<p class='section-text' style='color:#4ade80; font-weight:500; margin-top:4px;'>" +
+            "✅ You are shortlisted for the next round based on your current profile." +
+            "</p>";
+        } else {
+          decisionLine =
+            "<p class='section-text' style='color:#f97373; font-weight:500; margin-top:4px;'>" +
+            "❌ You are not shortlisted yet. Improve the following skills and try again." +
+            "</p>";
+        }
+
+        if (infoBox) {
+          infoBox.innerHTML =
+            "<p class='section-text'>Domain: <strong>" + domainLabel + "</strong></p>" +
+            "<p class='section-text'>Overall AI score: <strong>" + scoreText + "</strong></p>" +
+            decisionLine;
+        }
+
+        // hero snapshot update
+        if (heroDomain) heroDomain.textContent = domainLabel;
+        if (heroScore) heroScore.textContent = scoreText;
+        if (heroDecision) {
+          heroDecision.textContent = selected
+            ? "Selected / above benchmark"
+            : "Below benchmark (needs improvement)";
+        }
+
+        // --- score bar ---
+        if (scoreBarFill && scoreBarLabel) {
+          if (rawScore != null) {
+            const pct = Math.max(0, Math.min(1, rawScore)) * 100;
+            scoreBarFill.style.width = pct.toFixed(1) + "%";
+            scoreBarLabel.textContent =
+              "Model confidence: " + pct.toFixed(1) +
+              "% (based on trained resume dataset)";
+          } else {
+            scoreBarFill.style.width = "0%";
+            scoreBarLabel.textContent = "Model confidence: –";
+          }
+        }
+
+        // --- helper for lists ---
+        function fillList(listElem, items, emptyText) {
+          listElem.innerHTML = "";
+          if (!items || items.length === 0) {
+            const li = document.createElement("li");
+            li.className = "feature-item";
+            li.innerHTML = "<span class='bullet'>•</span><span>" + emptyText + "</span>";
+            listElem.appendChild(li);
+            return;
+          }
+          items.forEach(text => {
+            const li = document.createElement("li");
+            li.className = "feature-item";
+            li.innerHTML = "<span class='bullet'>•</span><span>" + text + "</span>";
+            listElem.appendChild(li);
+          });
+        }
+
+        fillList(
+          strengthsList,
+          data.strengths,
+          "No strengths detected yet – check if your resume clearly lists your key skills and projects."
+        );
+        fillList(
+          improvementsList,
+          data.improvements,
+          "No improvement areas detected – try uploading a more detailed resume."
+        );
+
+        const mergedSuggestions =
+          (data.suggested_courses || []).concat(data.suggested_projects || []);
+        fillList(
+          suggestionsList,
+          mergedSuggestions,
+          "No specific suggestions yet – once more ML logic is added, this area will provide targeted learning steps."
+        );
+
+        // --- traits / profile type ---
+        const profileType = data.profile_type || "Not enough information";
+        if (profileTypeLabel) profileTypeLabel.textContent = profileType;
+        if (heroProfileType) heroProfileType.textContent = profileType;
+
+        if (traitsList) {
+          const traits = data.personality_traits || [];
+          fillList(
+            traitsList,
+            traits,
+            "No explicit soft-skill traits detected from this resume."
+          );
+        }
+
+        // --- AI-style summary & focus text ---
+        if (aiSummary) {
+          const strengths = data.strengths || [];
+          const improvements = data.improvements || [];
+          const mainStrength = strengths.length ? strengths[0] : null;
+          const mainGap = improvements.length ? improvements[0] : null;
+
+          let summary = "";
+
+          if (rawScore != null) {
+            const pct = (rawScore * 100).toFixed(1);
+            summary += "The model currently scores your profile at approximately " +
+                       pct + "% for the <strong>" + domainLabel +
+                       "</strong> domain. ";
+          }
+
+          if (mainStrength) {
+            summary += "Your strongest signal is: <strong>" + mainStrength + "</strong>. ";
+          }
+
+          if (mainGap) {
+            summary += "The first area to focus on is: <strong>" + mainGap + "</strong>. ";
+          }
+
+          summary += "Update your resume after improving this area and re-run the analysis to see how the score changes.";
+
+          aiSummary.innerHTML =
+            "<span class='badge-small'>Live insight</span>" +
+            "<p class='section-text'>" + summary + "</p>";
+        }
+
+        if (focusText) {
+          if (selected) {
+            focusText.textContent =
+              "You are close to the benchmark for this domain. Double-down on your strengths while gradually closing the top 1–2 gaps listed above.";
+          } else {
+            focusText.textContent =
+              "You are currently below the benchmark. Start by fixing the first improvement item, then build 1–2 solid projects that highlight those skills.";
+          }
+        }
+
+      } catch (err) {
+        console.error(err);
+        if (infoBox) {
+          infoBox.innerHTML =
+            "<p class='section-text'>Network error while loading skill report.</p>";
+        }
+        if (focusText) {
+          focusText.textContent =
+            "Could not load the report due to a network error. Please try again.";
+        }
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", loadSkillReport);
+  </script>
+</body>
+</html>

@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FairHire AI – AI Interview Questions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1e293b, #020617);
+      color: #e5e7eb;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* TOP BAR */
+    .top-bar {
+      width: 100%;
+      padding: 10px 18px;
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid rgba(30, 64, 175, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(14px);
+    }
+
+    @media (min-width: 960px) {
+      .top-bar {
+        padding: 12px 40px;
+      }
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 20% 10%, #38bdf8, #1d4ed8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #f9fafb;
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.7);
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .logo-title {
+      font-size: 1.05rem;
+      font-weight: 650;
+      letter-spacing: 0.03em;
+    }
+
+    .logo-sub {
+      font-size: 0.7rem;
+      color: #9ca3af;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.86rem;
+    }
+
+    .nav-link {
+      position: relative;
+      padding-bottom: 3px;
+      cursor: pointer;
+      color: #cbd5f5;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background: linear-gradient(90deg, #60a5fa, #38bdf8);
+      transition: width 0.18s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-link.active {
+      color: #f9fafb;
+    }
+
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        display: none;
+      }
+    }
+
+    /* LAYOUT */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 18px 18px 22px;
+      gap: 16px;
+    }
+
+    @media (min-width: 960px) {
+      .main {
+        padding: 22px 40px 26px;
+      }
+    }
+
+    .hero {
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 3px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(96, 165, 250, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 7px;
+      color: #bfdbfe;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.9);
+    }
+
+    .hero-title {
+      font-size: 1.9rem;
+      line-height: 1.25;
+      font-weight: 700;
+      color: #f9fafb;
+      margin-bottom: 6px;
+    }
+
+    @media (min-width: 960px) {
+      .hero-title {
+        font-size: 2.05rem;
+      }
+    }
+
+    .hero-subtitle {
+      font-size: 0.93rem;
+      color: #9ca3af;
+      max-width: 34rem;
+    }
+
+    .hero-subtitle span {
+      color: #a5b4fc;
+      font-weight: 500;
+    }
+
+    /* GRID */
+    .content {
+      max-width: 1100px;
+      width: 100%;
+      margin: 10px auto 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.1fr);
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.05), transparent),
+                  rgba(15, 23, 42, 0.95);
+      border-radius: 20px;
+      padding: 18px 16px;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #e5e7eb;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-title span.icon {
+      font-size: 1.05rem;
+    }
+
+    .card-helper {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-bottom: 10px;
+    }
+
+    .section-heading {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #e5e7eb;
+      margin-bottom: 6px;
+    }
+
+    .section-text {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-bottom: 8px;
+    }
+
+    .highlight-box {
+      margin-top: 6px;
+      padding: 10px 10px 8px;
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px dashed rgba(148, 163, 184, 0.6);
+      font-size: 0.8rem;
+      color: #d1d5db;
+    }
+
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .feature-item span.bullet {
+      font-size: 0.8rem;
+      margin-top: 2px;
+      color: #60a5fa;
+    }
+
+    .placeholder-text {
+      font-size: 0.8rem;
+      color: #6b7280;
+      font-style: italic;
+    }
+
+    .btn-primary {
+      border-radius: 999px;
+      padding: 9px 18px;
+      font-size: 0.85rem;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #2563eb, #38bdf8);
+      color: #f9fafb;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.6);
+      transition: transform 0.1s ease, box-shadow 0.15s ease;
+      margin-top: 8px;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.75);
+      transform: translateY(-1px);
+    }
+
+    .page-footer {
+      width: 100%;
+      padding: 10px 20px 14px;
+      font-size: 0.75rem;
+      text-align: center;
+      color: #6b7280;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="top-bar">
+    <div class="logo-wrap">
+      <div class="logo-mark">FH</div>
+      <div class="logo-text">
+        <span class="logo-title">FairHire AI</span>
+        <span class="logo-sub">Bias-Free ML Recruitment</span>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="nav-link" href="/index.html">Home</a>
+      <a class="nav-link" id="nav-skills" href="/skills.html">Skills Improvement</a>
+      <a class="nav-link active" href="/questions.html">AI Questions</a>
+    </nav>
+  </header>
+
+  <main class="main">
+    <section class="hero">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        AI Interview Questions
+      </div>
+      <h1 class="hero-title">AI-generated interview questions from your resume.</h1>
+      <p class="hero-subtitle">
+        This page uses your <span>real AI skill report</span> – domain, score and detected strengths –
+        to generate domain-specific, personalised interview questions.
+      </p>
+    </section>
+
+    <section class="content">
+      <!-- LEFT: explanation based on real data -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">🤖</span>
+          How these questions were generated for you
+        </div>
+        <p class="card-helper">
+          Instead of static text, this panel explains – using your actual data – how the
+          ML model and the Ollama LLM decided which questions to ask.
+        </p>
+
+        <div class="section-heading">Overview</div>
+        <div id="q-info-box" class="highlight-box">
+          <p class="section-text">Loading analysis details...</p>
+        </div>
+
+        <div class="section-heading" style="margin-top:10px;">Key signals used</div>
+        <ul id="q-signals-list" class="feature-list"></ul>
+
+        <button class="btn-primary" onclick="window.location.href='index.html#hero'">
+          ← Go back to upload your resume again
+        </button>
+      </div>
+
+      <!-- RIGHT: questions + improvements -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">📋</span>
+          Your AI-generated questions
+        </div>
+        <p class="card-helper">
+          These questions are generated in real-time from the Ollama <strong>llama3</strong> model
+          using your anonymised resume, ML score and detected skills.
+        </p>
+
+        <div id="questions-box" style="margin-top:10px;">
+          <p class="placeholder-text">
+            Waiting for the AI model to generate your questions...
+          </p>
+        </div>
+
+        <div class="section-heading" style="margin-top:12px;">Suggested improvements</div>
+        <ul id="improvements-list" class="feature-list"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    FairHire AI – AI/ML-based interview preparation powered by your actual resume data.
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    function getCandidateIdFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("candidate_id");
+    }
+
+    // simple helpers
+    function wait(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function typeLine(container, text, delay = 15) {
+      const p = document.createElement("p");
+      p.style.margin = "6px 0";
+      p.style.fontSize = "0.9rem";
+      container.appendChild(p);
+
+      for (let ch of text) {
+        p.textContent += ch;
+        await wait(delay);
+      }
+    }
+
+    async function renderQuestionsTyping(container, questions) {
+      container.innerHTML = "";
+      if (!questions || questions.length === 0) {
+        container.innerHTML = "<p>No questions generated yet.</p>";
+        return;
+      }
+
+      for (let i = 0; i < questions.length; i++) {
+        const qText = (i + 1) + ". " + questions[i];
+        await typeLine(container, qText, 15);
+        await wait(120);
+      }
+    }
+
+    async function loadPage() {
+      const cid = getCandidateIdFromUrl();
+      const qInfoBox = document.getElementById("q-info-box");
+      const qSignalsList = document.getElementById("q-signals-list");
+      const questionsBox = document.getElementById("questions-box");
+      const improvList = document.getElementById("improvements-list");
+      const navSkills = document.getElementById("nav-skills");
+
+      if (!cid) {
+        qInfoBox.innerHTML = "<p class='section-text'>No candidate id found. Please upload your resume first.</p>";
+        questionsBox.innerHTML = "<p>No candidate id found.</p>";
+        return;
+      }
+
+      // nav मधून skills page वर गेल्यास candidate_id carry कर
+      if (navSkills) {
+        navSkills.href = "/skills.html?candidate_id=" + encodeURIComponent(cid);
+      }
+
+      // दोन API calls parallel मध्ये – skill_report + questions
+      try {
+        const [r1, r2] = await Promise.all([
+          fetch("/api/skill_report?candidate_id=" + encodeURIComponent(cid)),
+          fetch("/api/questions?candidate_id=" + encodeURIComponent(cid)),
+        ]);
+
+        const skillData = await r1.json();
+        const qData = await r2.json();
+
+        // ---- LEFT PANEL: explanation from skill_report ----
+        if (!r1.ok) {
+          qInfoBox.innerHTML =
+            "<p class='section-text'>Could not load skill report: " +
+            (skillData.error || "unknown error") + "</p>";
+        } else {
+          const domain = skillData.domain || "N/A";
+          const score = skillData.score != null ? (skillData.score * 100).toFixed(1) + "%" : "N/A";
+          const status = skillData.selected ? "Selected / above benchmark" : "Below benchmark";
+          const modelLabel = (skillData.model_label || (skillData.selected ? "selected" : "rejected"));
+
+          const strengths = skillData.strengths || [];
+          const improvements = skillData.improvements || [];
+
+          const mainStrength = strengths.length ? strengths[0] : "Not clearly detected.";
+          const mainGap = improvements.length ? improvements[0] : "Not clearly detected.";
+
+          qInfoBox.innerHTML =
+            "<p class='section-text'>Domain: <strong>" + domain + "</strong></p>" +
+            "<p class='section-text'>Model score: <strong>" + score + "</strong> (" + status + ")</p>" +
+            "<p class='section-text'>Decision used for questions: <strong>" + modelLabel + "</strong></p>" +
+            "<p class='section-text'>Main strength signal: <strong>" + mainStrength + "</strong></p>" +
+            "<p class='section-text'>Main gap signal: <strong>" + mainGap + "</strong></p>";
+
+          // signals list
+          qSignalsList.innerHTML = "";
+          const signals = [
+            "Your selected job domain: " + domain,
+            "ML model confidence score: " + score,
+            "Top strength the model picked up: " + mainStrength,
+            "Primary improvement focus: " + mainGap,
+            "Questions are then generated by the Ollama llama3 model using these signals and your anonymised resume text.",
+          ];
+          signals.forEach(s => {
+            const li = document.createElement("li");
+            li.className = "feature-item";
+            li.innerHTML = "<span class='bullet'>•</span><span>" + s + "</span>";
+            qSignalsList.appendChild(li);
+          });
+        }
+
+        // ---- RIGHT PANEL: questions + improvements ----
+        if (!r2.ok) {
+          questionsBox.innerHTML =
+            "<p class='section-text'>Could not load questions: " +
+            (qData.error || "unknown error") + "</p>";
+        } else {
+          // typing effect
+          await renderQuestionsTyping(questionsBox, qData.questions || []);
+
+          // improvements
+          improvList.innerHTML = "";
+          (qData.improvements || []).forEach(tip => {
+            const li = document.createElement("li");
+            li.className = "feature-item";
+            li.innerHTML = "<span class='bullet'>•</span><span>" + tip + "</span>";
+            improvList.appendChild(li);
+          });
+        }
+
+      } catch (err) {
+        console.error(err);
+        qInfoBox.innerHTML = "<p class='section-text'>Network error while loading analysis.</p>";
+        questionsBox.innerHTML = "<p>Network error while loading questions.</p>";
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", loadPage);
+  </script>
+</body>
+</html>

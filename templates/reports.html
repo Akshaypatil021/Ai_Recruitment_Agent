@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FairHire AI – HR Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1e293b, #020617);
+      color: #e5e7eb;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* TOP BAR */
+    .top-bar {
+      width: 100%;
+      padding: 10px 18px;
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid rgba(30, 64, 175, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(14px);
+    }
+
+    @media (min-width: 960px) {
+      .top-bar {
+        padding: 12px 40px;
+      }
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 20% 10%, #38bdf8, #1d4ed8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #f9fafb;
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.7);
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .logo-title {
+      font-size: 1.05rem;
+      font-weight: 650;
+      letter-spacing: 0.03em;
+    }
+
+    .logo-sub {
+      font-size: 0.7rem;
+      color: #9ca3af;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.86rem;
+    }
+
+    .nav-link {
+      position: relative;
+      padding-bottom: 3px;
+      cursor: pointer;
+      color: #cbd5f5;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background: linear-gradient(90deg, #60a5fa, #38bdf8);
+      transition: width 0.18s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-link.active {
+      color: #f9fafb;
+    }
+
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        display: none;
+      }
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 18px 18px 22px;
+      gap: 16px;
+    }
+
+    @media (min-width: 960px) {
+      .main {
+        padding: 22px 40px 26px;
+      }
+    }
+
+    .hero {
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto 8px;
+    }
+
+    .hero-badge {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 3px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(96, 165, 250, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 7px;
+      color: #bfdbfe;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.9);
+    }
+
+    .hero-title {
+      font-size: 1.8rem;
+      line-height: 1.25;
+      font-weight: 700;
+      color: #f9fafb;
+      margin-bottom: 4px;
+    }
+
+    .hero-subtitle {
+      font-size: 0.9rem;
+      color: #9ca3af;
+      max-width: 34rem;
+    }
+
+    /* GRID */
+    .content {
+      max-width: 1100px;
+      width: 100%;
+      margin: 8px auto 0;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 14px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    @media (max-width: 900px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.05), transparent),
+                  rgba(15, 23, 42, 0.95);
+      border-radius: 18px;
+      padding: 14px 14px;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #f9fafb;
+    }
+
+    .stat-sub {
+      font-size: 0.75rem;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+
+    .table-card {
+      margin-top: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    thead {
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    th, td {
+      padding: 8px 10px;
+      border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+    }
+
+    th {
+      text-align: left;
+      color: #9ca3af;
+      font-weight: 500;
+      font-size: 0.78rem;
+    }
+
+    tbody tr:hover {
+      background: rgba(15, 23, 42, 0.75);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 2px 9px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    .pill.selected {
+      background: rgba(22, 163, 74, 0.18);
+      border: 1px solid rgba(22, 163, 74, 0.9);
+      color: #bbf7d0;
+    }
+
+    .pill.rejected {
+      background: rgba(220, 38, 38, 0.15);
+      border: 1px solid rgba(248, 113, 113, 0.9);
+      color: #fecaca;
+    }
+
+    .page-footer {
+      width: 100%;
+      padding: 10px 20px 14px;
+      font-size: 0.75rem;
+      text-align: center;
+      color: #6b7280;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="top-bar">
+    <div class="logo-wrap">
+      <div class="logo-mark">FH</div>
+      <div class="logo-text">
+        <span class="logo-title">FairHire AI</span>
+        <span class="logo-sub">Bias-Free ML Recruitment</span>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="nav-link" href="/index.html">Home</a>
+      <a class="nav-link" href="/skills.html">Skills Improvement</a>
+      <a class="nav-link" href="/questions.html">AI Questions</a>
+      <a class="nav-link active" href="/reports.html">HR Dashboard</a>
+    </nav>
+  </header>
+
+  <main class="main">
+    <section class="hero">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        HR / Recruiter View
+      </div>
+      <h1 class="hero-title">Candidate summary from the AI screening pipeline.</h1>
+      <p class="hero-subtitle">
+        This dashboard shows how many candidates have been processed by the model,
+        how many were shortlisted and their scores by domain.
+      </p>
+    </section>
+
+    <section class="content">
+      <!-- STATS -->
+      <div class="stats-grid">
+        <div class="card">
+          <div class="stat-label">Total candidates</div>
+          <div class="stat-value" id="stat-total">–</div>
+          <div class="stat-sub">All resumes analysed by the system</div>
+        </div>
+        <div class="card">
+          <div class="stat-label">Shortlisted</div>
+          <div class="stat-value" id="stat-selected">–</div>
+          <div class="stat-sub">Profiles above the ML threshold</div>
+        </div>
+        <div class="card">
+          <div class="stat-label">Rejected</div>
+          <div class="stat-value" id="stat-rejected">–</div>
+          <div class="stat-sub">Profiles below the ML threshold</div>
+        </div>
+        <div class="card">
+          <div class="stat-label">Average score</div>
+          <div class="stat-value" id="stat-avg-score">–</div>
+          <div class="stat-sub">Across all processed candidates</div>
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="card table-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <div style="font-size:0.85rem; font-weight:600;">Recent candidates</div>
+          <div style="font-size:0.75rem; color:#6b7280;" id="table-caption">
+            Showing latest candidates...
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Candidate ID</th>
+                <th>Domain</th>
+                <th>Score</th>
+                <th>Decision</th>
+                <th>Created at (UTC)</th>
+              </tr>
+            </thead>
+            <tbody id="candidates-body">
+              <tr>
+                <td colspan="6" style="text-align:center; padding:10px;">
+                  Loading candidates...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    FairHire AI – Internal dashboard for AI/ML-based recruitment.
+  </footer>
+
+  <script>
+    async function loadDashboard() {
+      const totalElem = document.getElementById("stat-total");
+      const selectedElem = document.getElementById("stat-selected");
+      const rejectedElem = document.getElementById("stat-rejected");
+      const avgScoreElem = document.getElementById("stat-avg-score");
+      const tbody = document.getElementById("candidates-body");
+      const caption = document.getElementById("table-caption");
+
+      try {
+        const res = await fetch("/api/candidates?limit=50");
+        const data = await res.json();
+
+        if (!res.ok) {
+          tbody.innerHTML = "<tr><td colspan='6' style='text-align:center; padding:10px;'>Error loading candidates.</td></tr>";
+          totalElem.textContent = "–";
+          selectedElem.textContent = "–";
+          rejectedElem.textContent = "–";
+          avgScoreElem.textContent = "–";
+          return;
+        }
+
+        const stats = data.stats || {};
+        const rows = data.candidates || [];
+
+        totalElem.textContent = stats.total ?? 0;
+        selectedElem.textContent = stats.selected ?? 0;
+        rejectedElem.textContent = stats.rejected ?? 0;
+
+        if (stats.avg_score != null) {
+          avgScoreElem.textContent = (stats.avg_score * 100).toFixed(1) + "%";
+        } else {
+          avgScoreElem.textContent = "–";
+        }
+
+        caption.textContent = "Showing latest " + rows.length + " candidates";
+
+        // fill table
+        tbody.innerHTML = "";
+        if (rows.length === 0) {
+          tbody.innerHTML =
+            "<tr><td colspan='6' style='text-align:center; padding:10px;'>No candidates analysed yet.</td></tr>";
+          return;
+        }
+
+        rows.forEach((row, idx) => {
+          const tr = document.createElement("tr");
+
+          const scoreText =
+            row.score != null ? (row.score * 100).toFixed(1) + "%" : "–";
+          const decision = row.selected ? "Selected" : "Rejected";
+
+          tr.innerHTML = `
+            <td>${idx + 1}</td>
+            <td style="max-width:260px; overflow:hidden; text-overflow:ellipsis;">${row.candidate_id}</td>
+            <td>${row.domain || "-"}</td>
+            <td>${scoreText}</td>
+            <td>
+              <span class="pill ${row.selected ? "selected" : "rejected"}">
+                ${decision}
+              </span>
+            </td>
+            <td style="font-size:0.75rem; color:#9ca3af;">
+              ${row.created_at ? row.created_at.replace("T", " ").slice(0, 19) : "-"}
+            </td>
+          `;
+
+          tbody.appendChild(tr);
+        });
+
+      } catch (err) {
+        console.error(err);
+        tbody.innerHTML =
+          "<tr><td colspan='6' style='text-align:center; padding:10px;'>Network error while loading dashboard.</td></tr>";
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", loadDashboard);
+  </script>
+</body>
+</html>

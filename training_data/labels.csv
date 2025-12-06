@@ -1,0 +1,14 @@
+filename,label
+swe_strong_01.docx,selected
+swe_weak_01.docx,rejected
+ds_strong_01.docx,selected
+ds_weak_01.docx,rejected
+web_strong_01.docx,selected
+web_weak_01.docx,rejected
+dm_strong_01.docx,selected
+dm_weak_01.docx,rejected
+ba_strong_01.docx,selected
+ba_weak_01.docx,rejected
+mix_avg_01.docx,rejected
+mix_strong_02.docx,selected
+pdf1.pdf,rejected

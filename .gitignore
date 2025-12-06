@@ -1,0 +1,29 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual env
+venv/
+.env/
+.env.local
+
+# Local SQLite DB
+fairhire.db
+
+# Uploaded resumes from users
+uploads/
+
+# Machine learning models (large files)
+*.joblib
+*.pkl
+
+# Training data resumes (kept only locally)
+training_data/resumes/
+
+# IDE / editor settings
+.vscode/
+.idea/
+
+# OS / misc
+.DS_Store
+Thumbs.db

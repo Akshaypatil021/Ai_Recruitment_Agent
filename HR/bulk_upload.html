@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FairHire HR – Bulk Screening</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #0b1120, #020617);
+      color: #e5e7eb;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .top-bar {
+      width: 100%;
+      padding: 10px 18px;
+      background: rgba(15, 23, 42, 0.96);
+      border-bottom: 1px solid rgba(30, 64, 175, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(14px);
+    }
+
+    @media (min-width: 960px) {
+      .top-bar {
+        padding: 12px 40px;
+      }
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 20% 10%, #38bdf8, #1d4ed8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #f9fafb;
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.7);
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .logo-title {
+      font-size: 1.05rem;
+      font-weight: 650;
+      letter-spacing: 0.03em;
+    }
+
+    .logo-sub {
+      font-size: 0.7rem;
+      color: #9ca3af;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.86rem;
+    }
+
+    .nav-link {
+      position: relative;
+      padding-bottom: 3px;
+      cursor: pointer;
+      color: #cbd5f5;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background: linear-gradient(90deg, #60a5fa, #38bdf8);
+      transition: width 0.18s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-link.active {
+      color: #f9fafb;
+    }
+
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        display: none;
+      }
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 18px 18px 22px;
+      gap: 16px;
+    }
+
+    @media (min-width: 960px) {
+      .main {
+        padding: 22px 40px 26px;
+      }
+    }
+
+    .hero {
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto 8px;
+    }
+
+    .hero-badge {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 3px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(96, 165, 250, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 7px;
+      color: #bfdbfe;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #facc15;
+      box-shadow: 0 0 8px rgba(250, 204, 21, 0.9);
+    }
+
+    .hero-title {
+      font-size: 1.8rem;
+      line-height: 1.25;
+      font-weight: 700;
+      color: #f9fafb;
+      margin-bottom: 4px;
+    }
+
+    .hero-subtitle {
+      font-size: 0.9rem;
+      color: #9ca3af;
+      max-width: 36rem;
+    }
+
+    .content {
+      max-width: 1100px;
+      width: 100%;
+      margin: 8px auto 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr);
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.08), transparent),
+                  rgba(15, 23, 42, 0.96);
+      border-radius: 18px;
+      padding: 16px 16px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .card-helper {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-bottom: 10px;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 10px;
+    }
+
+    .field-label {
+      font-size: 0.78rem;
+      color: #9ca3af;
+    }
+
+    .select-input,
+    .file-input {
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.95);
+      color: #e5e7eb;
+      font-size: 0.8rem;
+      outline: none;
+    }
+
+    .file-input {
+      border-style: dashed;
+    }
+
+    .select-input option {
+      background: #020617;
+      color: #e5e7eb;
+    }
+
+    .btn-primary {
+      border-radius: 999px;
+      padding: 9px 18px;
+      font-size: 0.85rem;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(135deg, #2563eb, #38bdf8);
+      color: #f9fafb;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.6);
+      transition: transform 0.1s ease, box-shadow 0.15s ease;
+      margin-top: 6px;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.75);
+      transform: translateY(-1px);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-size: 0.74rem;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      color: #9ca3af;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.9);
+    }
+
+    .status-dot.off {
+      background: #f97316;
+      box-shadow: 0 0 8px rgba(249, 115, 22, 0.9);
+    }
+
+    .table-wrapper {
+      margin-top: 6px;
+      max-height: 360px;
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    thead {
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    th, td {
+      padding: 7px 9px;
+      border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+    }
+
+    th {
+      text-align: left;
+      color: #9ca3af;
+      font-weight: 500;
+      font-size: 0.78rem;
+    }
+
+    tbody tr:hover {
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    .pill-selected {
+      background: rgba(22, 163, 74, 0.16);
+      border: 1px solid rgba(22, 163, 74, 0.9);
+      color: #bbf7d0;
+    }
+
+    .pill-rejected {
+      background: rgba(220, 38, 38, 0.16);
+      border: 1px solid rgba(248, 113, 113, 0.9);
+      color: #fecaca;
+    }
+
+    .page-footer {
+      width: 100%;
+      padding: 10px 20px 14px;
+      font-size: 0.75rem;
+      text-align: center;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <header class="top-bar">
+    <div class="logo-wrap">
+      <div class="logo-mark">FH</div>
+      <div class="logo-text">
+        <span class="logo-title">FairHire AI</span>
+        <span class="logo-sub">HR Screening Tools</span>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="nav-link" href="/index.html">Candidate Portal</a>
+      <a class="nav-link active" href="/hr/bulk_upload.html">Bulk Screening</a>
+      <a class="nav-link" href="/hr/selected.html">Selected Candidates</a>
+    </nav>
+  </header>
+
+  <main class="main">
+    <section class="hero">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Bulk AI Screening
+      </div>
+      <h1 class="hero-title">Upload multiple resumes and screen them in one go.</h1>
+      <p class="hero-subtitle">
+        Select a target job domain, drop multiple resumes, and let FairHire AI
+        score and shortlist candidates. You’ll immediately see who is selected and who needs improvement.
+      </p>
+    </section>
+
+    <section class="content">
+      <!-- LEFT: FORM -->
+      <div class="card">
+        <div class="card-title">Bulk screening setup</div>
+        <p class="card-helper">
+          Choose the domain you are hiring for, then upload multiple PDF / DOCX resumes.
+          The AI model will score each resume and mark them as <strong>Selected</strong> or <strong>Rejected</strong>.
+        </p>
+
+        <form id="hr_form">
+          <div class="field-group">
+            <label class="field-label" for="domain">Job domain</label>
+            <select id="domain" class="select-input">
+              <option value="software_engineer">Software Engineer</option>
+              <option value="data_science">Data Science</option>
+              <option value="web_development">Web Development</option>
+              <option value="devops_cloud">DevOps / Cloud</option>
+              <option value="ui_ux_design">UI / UX Design</option>
+              <option value="business_analyst">Business Analyst</option>
+              <option value="digital_marketing">Digital Marketing</option>
+              <option value="hr_talent_acquisition">HR / Talent Acquisition</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="files">Upload resumes</label>
+            <input
+              type="file"
+              id="files"
+              class="file-input"
+              multiple
+              accept=".pdf,.doc,.docx"
+            />
+            <span style="font-size:0.72rem; color:#6b7280;">
+              You can select multiple files at once. Max size depends on server setting.
+            </span>
+          </div>
+
+          <button type="submit" class="btn-primary">
+            ▶ Run bulk screening
+          </button>
+
+          <div class="status-badge" id="status-badge">
+            <span class="status-dot off" id="status-dot"></span>
+            <span id="status-text">Idle – no job running</span>
+          </div>
+        </form>
+      </div>
+
+      <!-- RIGHT: RESULTS -->
+      <div class="card">
+        <div class="card-title">Screening results</div>
+        <p class="card-helper">
+          Once the screening completes, the table below will display each file with
+          its AI score and decision. Selected candidates are automatically added
+          to the “Selected Candidates” page.
+        </p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>File name</th>
+                <th>Score</th>
+                <th>Decision</th>
+              </tr>
+            </thead>
+            <tbody id="result-body">
+              <tr>
+                <td colspan="4" style="text-align:center; padding:10px;">
+                  No bulk screening run yet.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    FairHire AI – Bulk AI/ML resume screening for recruiters.
+  </footer>
+
+  <script>
+    const form = document.getElementById("hr_form");
+    const statusBadge = document.getElementById("status-badge");
+    const statusDot = document.getElementById("status-dot");
+    const statusText = document.getElementById("status-text");
+    const resultBody = document.getElementById("result-body");
+
+    function setStatus(running, text) {
+      if (running) {
+        statusDot.classList.remove("off");
+        statusText.textContent = text || "Running bulk screening...";
+      } else {
+        statusDot.classList.add("off");
+        statusText.textContent = text || "Idle – no job running";
+      }
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const domain = document.getElementById("domain").value;
+      const files = document.getElementById("files").files;
+
+      if (!files.length) {
+        alert("Please select at least one resume file.");
+        return;
+      }
+
+      const fd = new FormData();
+      fd.append("domain", domain);
+      [...files].forEach((f) => fd.append("resumes", f));
+
+      setStatus(true, "Screening " + files.length + " resumes...");
+
+      resultBody.innerHTML =
+        "<tr><td colspan='4' style='text-align:center; padding:10px;'>Processing resumes...</td></tr>";
+
+      try {
+        const res = await fetch("/api/hr/bulk_analyze", {
+          method: "POST",
+          body: fd,
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          alert(data.error || "Error during bulk screening.");
+          setStatus(false, "Error – please retry");
+          return;
+        }
+
+        const processed = data.processed || [];
+        if (!processed.length) {
+          resultBody.innerHTML =
+            "<tr><td colspan='4' style='text-align:center; padding:10px;'>No valid resumes processed.</td></tr>";
+          setStatus(false, "Completed – no valid resumes");
+          return;
+        }
+
+        resultBody.innerHTML = "";
+        processed.forEach((item, idx) => {
+          const score = item.score != null ? (item.score * 100).toFixed(1) + "%" : "–";
+          const selected = item.selected;
+
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${idx + 1}</td>
+            <td>${item.file}</td>
+            <td>${score}</td>
+            <td>
+              <span class="pill ${
+                selected ? "pill-selected" : "pill-rejected"
+              }">
+                ${selected ? "Selected" : "Rejected"}
+              </span>
+            </td>
+          `;
+          resultBody.appendChild(tr);
+        });
+
+        setStatus(false, "Completed – view decisions below");
+      } catch (err) {
+        console.error(err);
+        resultBody.innerHTML =
+          "<tr><td colspan='4' style='text-align:center; padding:10px;'>Network error during bulk screening.</td></tr>";
+        setStatus(false, "Error – check network");
+      }
+    });
+  </script>
+</body>
+</html>

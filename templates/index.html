@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FairHire AI – Bias-Free Recruitment</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    /* --------- RESET --------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    html, body {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1e293b, #020617);
+      color: #e5e7eb;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* --------- TOP BAR (LOGO + NAV) --------- */
+    .top-bar {
+      width: 100%;
+      padding: 10px 18px;
+      background: rgba(15, 23, 42, 0.95);
+      border-bottom: 1px solid rgba(30, 64, 175, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(14px);
+    }
+
+    @media (min-width: 960px) {
+      .top-bar {
+        padding: 12px 40px;
+      }
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 20% 10%, #38bdf8, #1d4ed8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #f9fafb;
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.7);
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .logo-title {
+      font-size: 1.05rem;
+      font-weight: 650;
+      letter-spacing: 0.03em;
+    }
+
+    .logo-sub {
+      font-size: 0.7rem;
+      color: #9ca3af;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.86rem;
+    }
+
+    .nav-link {
+      position: relative;
+      padding-bottom: 3px;
+      cursor: pointer;
+      color: #cbd5f5;
+    }
+
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background: linear-gradient(90deg, #60a5fa, #38bdf8);
+      transition: width 0.18s ease;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-link.active {
+      color: #f9fafb;
+    }
+
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        display: none;
+      }
+    }
+
+    /* --------- MAIN LAYOUT --------- */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 18px 20px;
+      gap: 16px;
+    }
+
+    @media (min-width: 960px) {
+      .main {
+        padding: 20px 40px 24px;
+      }
+    }
+
+    /* --------- HERO SECTION --------- */
+    .hero {
+      max-width: 1180px;
+      width: 100%;
+      margin: 0 auto;
+      display: grid;
+      gap: 12px;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .hero-left {
+      padding-right: 10px;
+    }
+
+    .hero-badge {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 3px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(96, 165, 250, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 7px;
+      color: #bfdbfe;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.9);
+    }
+
+    .hero-title {
+      font-size: 1.9rem;
+      line-height: 1.25;
+      font-weight: 700;
+      color: #f9fafb;
+      margin-bottom: 6px;
+    }
+
+    @media (min-width: 960px) {
+      .hero-title {
+        font-size: 2.1rem;
+      }
+    }
+
+    .hero-subtitle {
+      font-size: 0.93rem;
+      color: #9ca3af;
+      max-width: 32rem;
+    }
+
+    .hero-subtitle span {
+      color: #a5b4fc;
+      font-weight: 500;
+    }
+
+    .hero-right {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .hero-stats {
+      min-width: 230px;
+      max-width: 320px;
+      width: 100%;
+      border-radius: 20px;
+      padding: 12px 14px;
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent),
+                  rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      box-shadow: 0 16px 40px rgba(15, 23, 42, 0.9);
+    }
+
+    .hero-stat-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #cbd5f5;
+      margin-bottom: 6px;
+    }
+
+    .hero-stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 4px;
+    }
+
+    .hero-stat-label {
+      font-size: 0.78rem;
+      color: #9ca3af;
+    }
+
+    .hero-stat-value {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .hero-small {
+      font-size: 0.75rem;
+      color: #6b7280;
+      margin-top: 6px;
+    }
+
+    /* --------- CONTENT GRID SECTION --------- */
+    .content {
+      max-width: 1180px;
+      width: 100%;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.1fr);
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    @media (max-width: 900px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* --------- CARD --------- */
+    .card {
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.05), transparent),
+                  rgba(15, 23, 42, 0.95);
+      border-radius: 20px;
+      padding: 18px 16px;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+    }
+
+    .card + .card {
+      margin-top: 12px;
+    }
+
+    .card-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #e5e7eb;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-title span.icon {
+      font-size: 1.05rem;
+    }
+
+    .card-helper {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-bottom: 10px;
+    }
+
+    /* --------- FORM ELEMENTS --------- */
+    label {
+      display: block;
+      font-size: 0.78rem;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .field-group {
+      margin-bottom: 8px;
+    }
+
+    input[type="text"],
+    input[type="email"] {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      background: rgba(15, 23, 42, 0.95);
+      color: #e5e7eb;
+      font-size: 0.88rem;
+      outline: none;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.4);
+    }
+
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.55);
+      background: rgba(15, 23, 42, 0.95);
+      color: #e5e7eb;
+      font-size: 0.88rem;
+      outline: none;
+      appearance: none;
+      background-image: linear-gradient(45deg, transparent 50%, #60a5fa 50%),
+                        linear-gradient(135deg, #60a5fa 50%, transparent 50%);
+      background-position: calc(100% - 14px) calc(50% - 4px),
+                           calc(100% - 10px) calc(50% + 4px);
+      background-size: 4px 4px, 4px 4px;
+      background-repeat: no-repeat;
+      cursor: pointer;
+    }
+
+    select:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.4);
+    }
+
+    /* --------- REQUIRED SKILLS --------- */
+    .skills-box {
+      margin-top: 12px;
+      padding: 10px 10px 8px;
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px dashed rgba(148, 163, 184, 0.6);
+    }
+
+    .skills-title {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #cbd5f5;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      min-height: 22px;
+    }
+
+    .skill-chip {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.17);
+      border: 1px solid rgba(96, 165, 250, 0.65);
+      font-size: 0.72rem;
+      color: #dbeafe;
+      white-space: nowrap;
+    }
+
+    .skills-placeholder {
+      font-size: 0.78rem;
+      color: #6b7280;
+    }
+
+    /* --------- RESUME UPLOAD --------- */
+    .upload-area {
+      margin-top: 4px;
+      border-radius: 18px;
+      border: 1.5px dashed rgba(148, 163, 184, 0.7);
+      padding: 16px 12px;
+      text-align: center;
+      background: radial-gradient(circle at top right, rgba(59, 130, 246, 0.07), transparent),
+                  rgba(15, 23, 42, 0.95);
+      cursor: pointer;
+      transition: border-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease,
+                  background 0.25s ease;
+    }
+
+    .upload-area:hover {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 1px rgba(96, 165, 250, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .upload-area:active {
+      transform: translateY(0px) scale(0.995);
+    }
+
+    .upload-icon {
+      font-size: 1.6rem;
+      margin-bottom: 4px;
+    }
+
+    .upload-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #e5e7eb;
+      margin-bottom: 4px;
+    }
+
+    .upload-text {
+      font-size: 0.78rem;
+      color: #9ca3af;
+    }
+
+    .file-info {
+      margin-top: 8px;
+      font-size: 0.78rem;
+      color: #d1d5db;
+      word-break: break-all;
+    }
+
+    .file-info span {
+      font-weight: 500;
+      color: #bfdbfe;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    /* --------- FOOTER ACTIONS --------- */
+    .footer-actions {
+      max-width: 1180px;
+      width: 100%;
+      margin: 10px auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    @media (min-width: 640px) {
+      .footer-actions {
+        flex-direction: column;
+        gap: 8px;
+      }
+    }
+
+    .hint {
+      font-size: 0.78rem;
+      color: #9ca3af;
+    }
+
+    .hint span {
+      color: #a5b4fc;
+      font-weight: 500;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 9px 18px;
+      font-size: 0.85rem;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: transform 0.1s ease, box-shadow 0.15s ease, background 0.2s ease,
+                  opacity 0.2s ease;
+    }
+
+    .btn-secondary {
+      background: rgba(15, 23, 42, 0.95);
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+    }
+
+    .btn-secondary:hover {
+      box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.8);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb, #38bdf8);
+      color: #f9fafb;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.6);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.75);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    /* --------- PAGE FOOTER --------- */
+    .page-footer {
+      width: 100%;
+      padding: 10px 20px 14px;
+      font-size: 0.75rem;
+      text-align: center;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <!-- TOP BAR -->
+  <header class="top-bar">
+    <div class="logo-wrap">
+      <div class="logo-mark">FH</div>
+      <div class="logo-text">
+        <span class="logo-title">FairHire AI</span>
+        <span class="logo-sub">Bias-Free ML Recruitment</span>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="nav-link active" href="/index.html">Home</a>
+      <a class="nav-link" href="/skills.html">Skills Improvement</a>
+      <a class="nav-link" href="/questions.html">AI Questions</a>
+    </nav>
+  </header>
+
+  <main class="main">
+    <!-- HERO SECTION -->
+    <section class="hero" id="hero">
+      <div class="hero-left">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          AI + ML Candidate Screening
+        </div>
+        <h1 class="hero-title">
+          Smart, bias-aware screening for your next role.
+        </h1>
+        <p class="hero-subtitle">
+          Upload your resume, choose a job domain and let
+          <span>AI evaluate your profile based on skills and experience</span> –
+          not your name, gender or location.
+        </p>
+      </div>
+      <div class="hero-right">
+        <div class="hero-stats">
+          <div class="hero-stat-title">What you get today</div>
+          <div class="hero-stat-row">
+            <span class="hero-stat-label">Domain-aware screening</span>
+            <span class="hero-stat-value">10+ job domains</span>
+          </div>
+          <div class="hero-stat-row">
+            <span class="hero-stat-label">Resume evaluation</span>
+            <span class="hero-stat-value">Skill-focused</span>
+          </div>
+          <div class="hero-stat-row">
+            <span class="hero-stat-label">Fairness-first</span>
+            <span class="hero-stat-value">PII minimized</span>
+          </div>
+          <p class="hero-small">
+            In the backend, Python and ML models will handle parsing, anonymization and scoring.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTENT GRID -->
+    <section class="content">
+      <!-- LEFT: DOMAIN + SKILLS + NEW FIELDS -->
+      <div>
+        <div class="card">
+          <div class="card-title">
+            <span class="icon">🧭</span>
+            Select Job Domain
+          </div>
+          <p class="card-helper">
+            Choose the domain that best matches your profile. The key skills expected for that domain will be shown below.
+          </p>
+
+          <!-- 🔹 NEW: Candidate name -->
+          <div class="field-group">
+            <label for="candidate-name">Full Name</label>
+            <input
+              type="text"
+              id="candidate-name"
+              placeholder="Enter your full name"
+              required
+            />
+          </div>
+
+          <!-- 🔹 NEW: Candidate email -->
+          <div class="field-group">
+            <label for="candidate-email">Email</label>
+            <input
+              type="email"
+              id="candidate-email"
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+
+          <label for="job-domain">Job Domain</label>
+          <select id="job-domain">
+            <option value="">-- Select a domain --</option>
+            <option value="software_engineer">Software Engineering</option>
+            <option value="data_science">Data Science / ML</option>
+            <option value="web_development">Web Development</option>
+            <option value="devops_cloud">DevOps / Cloud</option>
+            <option value="ui_ux">UI / UX Design</option>
+            <option value="product_management">Product Management</option>
+            <option value="cybersecurity">Cybersecurity</option>
+            <option value="business_analyst">Business Analyst</option>
+            <option value="digital_marketing">Digital Marketing</option>
+            <option value="hr_talent">HR & Talent Acquisition</option>
+          </select>
+
+          <div class="skills-box">
+            <div class="skills-title">Required Skills</div>
+            <div id="skills-list" class="skills-list">
+              <span class="skills-placeholder">
+                Please select a domain to see key skills.
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: RESUME UPLOAD -->
+      <div>
+        <div class="card">
+          <div class="card-title">
+            <span class="icon">📄</span>
+            Upload Your Resume
+          </div>
+          <p class="card-helper">
+            Supported formats: PDF, DOCX. The AI focuses on your skills, projects and education –
+            not your name, gender, home town or other sensitive personal data.
+          </p>
+
+          <input type="file" id="resume-input" accept=".pdf,.doc,.docx" />
+          <div class="upload-area" id="upload-area">
+            <div class="upload-icon">⬆️</div>
+            <div class="upload-title">Click here to select your resume</div>
+            <div class="upload-text">
+              Drag & drop is not enabled yet – please choose a file from your device.
+            </div>
+            <div class="file-info" id="file-info">No file selected</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER ACTIONS -->
+    <section class="footer-actions">
+      <div class="hint">
+        The AI will only use your <span>skills, experience and education</span> for evaluation – not your name or other PII.
+      </div>
+
+      <!-- NEW: status area -->
+      <div id="upload-status" class="hint">
+        <!-- status text will be shown here -->
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-secondary" type="button" id="clear-btn">
+          Reset
+        </button>
+        <button class="btn btn-primary" type="button" id="analyze-btn" disabled>
+          Analyze Resume
+        </button>
+        <!-- NEW: view skills report button -->
+        <button class="btn btn-primary" type="button" id="view-skills-btn" style="display:none;">
+          View Skills Report →
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    FairHire AI – an AI/ML project for bias-aware, skill-based recruitment. Backend: Python (Flask / FastAPI).
+  </footer>
+
+  <script>
+  // ---------- DOMAIN → SKILLS DATA ----------
+  const domainSkills = {
+    software_engineer: [
+      "Data Structures & Algorithms",
+      "Object-Oriented Programming (OOP)",
+      "Java / C++ / Python",
+      "Git & Version Control",
+      "System Design Basics",
+      "Unit Testing"
+    ],
+    data_science: [
+      "Python (Pandas, NumPy)",
+      "Machine Learning (Scikit-learn)",
+      "Statistics & Probability",
+      "Data Visualization (Matplotlib / Plotly)",
+      "SQL",
+      "Model Evaluation"
+    ],
+    web_development: [
+      "HTML5, CSS3, JavaScript",
+      "React / Angular / Vue (any)",
+      "Responsive Design",
+      "REST APIs",
+      "Basic Node.js / Backend",
+      "Browser DevTools"
+    ],
+    devops_cloud: [
+      "Linux & Shell Scripting",
+      "CI/CD (GitHub Actions / Jenkins)",
+      "Docker & Containers",
+      "Kubernetes (Basics)",
+      "AWS / Azure / GCP Fundamentals",
+      "Monitoring & Logging"
+    ],
+    ui_ux: [
+      "Figma / Adobe XD",
+      "Wireframing & Prototyping",
+      "User Research Basics",
+      "Visual Design Principles",
+      "Design Systems",
+      "Interaction Design"
+    ],
+    product_management: [
+      "Requirement Gathering",
+      "User Stories & Roadmaps",
+      "JIRA / Project Tools",
+      "Stakeholder Communication",
+      "Basic Data Analysis",
+      "Market Research"
+    ],
+    cybersecurity: [
+      "Network Fundamentals",
+      "Vulnerability Assessment Basics",
+      "OWASP Top 10",
+      "Linux Security",
+      "SIEM Basics",
+      "Incident Response Workflow"
+    ],
+    business_analyst: [
+      "Requirement Analysis",
+      "Process Mapping (Flowcharts)",
+      "SQL (Basic queries)",
+      "Excel / Google Sheets",
+      "Stakeholder Communication",
+      "Documentation (BRD/FRD)"
+    ],
+    digital_marketing: [
+      "SEO Fundamentals",
+      "Google Analytics / Search Console",
+      "Social Media Marketing",
+      "Content Strategy",
+      "Email Campaigns",
+      "Paid Ads Basics"
+    ],
+    hr_talent: [
+      "End-to-End Recruitment",
+      "Candidate Screening",
+      "Interview Coordination",
+      "HRIS Tools Basics",
+      "Communication Skills",
+      "Employee Onboarding"
+    ]
+  };
+
+  // ---------- DOM ELEMENTS ----------
+  const jobDomainSelect = document.getElementById("job-domain");
+  const skillsListDiv = document.getElementById("skills-list");
+  const uploadArea = document.getElementById("upload-area");
+  const resumeInput = document.getElementById("resume-input");
+  const fileInfo = document.getElementById("file-info");
+  const analyzeBtn = document.getElementById("analyze-btn");
+  const clearBtn = document.getElementById("clear-btn");
+  const navLinks = document.querySelectorAll(".nav-link");
+
+  const uploadStatus = document.getElementById("upload-status");
+  const viewSkillsBtn = document.getElementById("view-skills-btn");
+
+  const candidateNameInput = document.getElementById("candidate-name");
+  const candidateEmailInput = document.getElementById("candidate-email");
+
+  let selectedFile = null;
+  let lastCandidateId = null;
+
+  // ---------- UPDATE REQUIRED SKILLS ----------
+  jobDomainSelect.addEventListener("change", () => {
+    const value = jobDomainSelect.value;
+    skillsListDiv.innerHTML = "";
+
+    if (!value || !domainSkills[value]) {
+      const span = document.createElement("span");
+      span.className = "skills-placeholder";
+      span.textContent = "Please select a domain to see key skills.";
+      skillsListDiv.appendChild(span);
+    } else {
+      domainSkills[value].forEach(skill => {
+        const chip = document.createElement("span");
+        chip.className = "skill-chip";
+        chip.textContent = skill;
+        skillsListDiv.appendChild(chip);
+      });
+    }
+    updateAnalyzeButtonState();
+  });
+
+  // ---------- CLICK UPLOAD AREA ----------
+  uploadArea.addEventListener("click", () => {
+    resumeInput.click();
+  });
+
+  // ---------- HANDLE FILE SELECTION ----------
+  resumeInput.addEventListener("change", () => {
+    const file = resumeInput.files[0];
+    if (file) {
+      selectedFile = file;
+      fileInfo.innerHTML = `Selected: <span>${file.name}</span>`;
+    } else {
+      selectedFile = null;
+      fileInfo.textContent = "No file selected";
+    }
+    updateAnalyzeButtonState();
+  });
+
+  // ---------- ENABLE/DISABLE ANALYZE BUTTON ----------
+  function updateAnalyzeButtonState() {
+    const hasName = candidateNameInput.value.trim().length > 0;
+    const hasEmail = candidateEmailInput.value.trim().length > 0;
+
+    if (jobDomainSelect.value && selectedFile && hasName && hasEmail) {
+      analyzeBtn.disabled = false;
+    } else {
+      analyzeBtn.disabled = true;
+    }
+  }
+
+  candidateNameInput.addEventListener("input", updateAnalyzeButtonState);
+  candidateEmailInput.addEventListener("input", updateAnalyzeButtonState);
+
+  // ---------- ANALYZE BUTTON CLICK → CALL FLASK ----------
+  analyzeBtn.addEventListener("click", async () => {
+    if (!jobDomainSelect.value || !selectedFile) {
+      alert("Please select a job domain and upload your resume first.");
+      return;
+    }
+
+    const nameVal = candidateNameInput.value.trim();
+    const emailVal = candidateEmailInput.value.trim();
+
+    if (!nameVal || !emailVal) {
+      alert("Please enter your full name and email.");
+      return;
+    }
+
+    // simple basic email check
+    if (!emailVal.includes("@")) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("resume", selectedFile);
+      formData.append("domain", jobDomainSelect.value);
+      formData.append("name", nameVal);   // 🔹 NEW
+      formData.append("email", emailVal); // 🔹 NEW
+
+      uploadStatus.textContent = "Uploading and analysing your resume...";
+      viewSkillsBtn.style.display = "none";
+      lastCandidateId = null;
+      analyzeBtn.disabled = true;
+
+      const response = await fetch("/api/analyze_resume", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        uploadStatus.textContent = "Error: " + (data.error || "Something went wrong while analyzing the resume.");
+        analyzeBtn.disabled = false;
+        return;
+      }
+
+      console.log("Analyze response:", data);
+      lastCandidateId = data.candidate_id;
+
+      uploadStatus.innerHTML =
+        "✅ Resume analysed.<br>" +
+        "Score: <strong>" + data.score + "</strong><br>" +
+        "Candidate ID: <code>" + data.candidate_id + "</code><br>" +
+        "<span style='font-size:0.78rem;'>Click “View Skills Report →” to see detailed analysis.</span>";
+
+      viewSkillsBtn.style.display = "inline-flex";
+      viewSkillsBtn.onclick = () => {
+        if (!lastCandidateId) return;
+        window.location.href =
+          "/skills.html?candidate_id=" + encodeURIComponent(lastCandidateId);
+      };
+
+      analyzeBtn.disabled = false;
+
+    } catch (err) {
+      console.error(err);
+      uploadStatus.textContent = "Network error while calling backend.";
+      analyzeBtn.disabled = false;
+    }
+  });
+
+  // ---------- RESET BUTTON ----------
+  clearBtn.addEventListener("click", () => {
+    jobDomainSelect.value = "";
+    skillsListDiv.innerHTML = "";
+    const span = document.createElement("span");
+    span.className = "skills-placeholder";
+    span.textContent = "Please select a domain to see key skills.";
+    skillsListDiv.appendChild(span);
+
+    resumeInput.value = "";
+    selectedFile = null;
+    fileInfo.textContent = "No file selected";
+
+    candidateNameInput.value = "";
+    candidateEmailInput.value = "";
+
+    uploadStatus.textContent = "";
+    viewSkillsBtn.style.display = "none";
+    lastCandidateId = null;
+
+    updateAnalyzeButtonState();
+  });
+
+  // ---------- NAVBAR (simple) ----------
+  navLinks.forEach(link => {
+    // no special JS needed; plain href navigation works
+  });
+  </script>
+
+</body>
+</html>
