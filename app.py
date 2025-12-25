@@ -125,13 +125,14 @@ def questions_page():
 def reports_page():
     return render_template("reports.html")
 
-@app.route("/hr/selected.html")
-def hr_selected_page():
-    return render_template("hr/selected.html")
+@app.route("/hr/selected")
+def hr_selected():
+    return render_template("HR/selected.html")
 
-@app.route("/hr/bulk_upload.html")
-def hr_bulk_upload_page():
-    return render_template("hr/bulk_upload.html")
+
+@app.route("/hr/bulk-upload")
+def hr_bulk_upload():
+    return render_template("HR/bulk_upload.html")
 
 # ---------- API: ANALYZE RESUME ----------
 
