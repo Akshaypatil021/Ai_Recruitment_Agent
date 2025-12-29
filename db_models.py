@@ -19,13 +19,13 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-# SQLite DB file (same folder मध्ये fairhire.db तयार होईल)
+# SQLite DB file (same folder  fairhire.db created)
 DATABASE_URL = "sqlite:///fairhire.db"
 
-# Engine (DB शी connection)
+# Engine (connected DB connection)
 engine = create_engine(
     DATABASE_URL,
-    echo=False,   # True केलं तर SQL logs दिसतील
+    echo=False,   # If set True then see the logs 
     future=True,
 )
 
@@ -68,7 +68,7 @@ class Candidate(Base):
     matched_skills = Column(Text)     # JSON list
     missing_skills = Column(Text)     # JSON list
 
-    # 🔹 NEW FIELD – कधीहून आला ते track करण्यासाठी
+    # 🔹 NEW FIELD –ी
     source = Column(String, nullable=True)  # "candidate_portal" / "hr_bulk"
 
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -104,7 +104,7 @@ def save_candidate_summary(analysis: dict):
 
     try:
         with SessionLocal() as session:
-            # merge => exists असेल तर update, नसेल तर insert
+            #
             session.merge(obj)
             session.commit()
     except SQLAlchemyError as e:
