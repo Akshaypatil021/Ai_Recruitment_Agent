@@ -13,11 +13,11 @@ BASE_DIR = os.path.dirname(__file__)
 CLASSIFIER_PATH = os.path.join(BASE_DIR, "resume_classifier.joblib")
 EMBED_MODEL_PATH = os.path.join(BASE_DIR, "embed_model.joblib")
 
-# Load embedding model आणि classifier
-EMBED_MODEL = joblib.load(EMBED_MODEL_PATH)           # SentenceTransformer object save केला होता
+# Load embedding model and classifier
+EMBED_MODEL = joblib.load(EMBED_MODEL_PATH)           # SentenceTransformer objec
 CLASSIFIER = joblib.load(CLASSIFIER_PATH)            # LogisticRegression
 
-LABELS = CLASSIFIER.classes_.tolist()                # ['rejected', 'selected'] असे काहीतरी
+LABELS = CLASSIFIER.classes_.tolist()                # ['rejected', 'selected']
 
 def predict_score_and_label(resume_text: str):
     """
@@ -27,7 +27,7 @@ def predict_score_and_label(resume_text: str):
     - max probability score परत करतो
     """
     if not resume_text.strip():
-        # text नाही तर direct reject सारखं हाताळ
+      
         return 0.0, "rejected", []
 
     # (1, dim) embedding
@@ -40,7 +40,7 @@ def predict_score_and_label(resume_text: str):
 
     return score, label, probs.tolist()
 
-# ------- SKILL + RULE BASED AI LAYER (NEW) ---------
+# ------- SKILL + RULE-BASED AI LAYER (NEW) ---------
 
 def detect_skills(resume_text: str, domain: str) -> Tuple[List[str], List[str]]:
     text = resume_text.lower()
