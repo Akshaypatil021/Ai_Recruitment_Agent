@@ -1,14 +1,12 @@
 """
-Phase A – Resume Classification Model Training
-
-हा script 20 resumes (PDF/DOCX) + labels.csv वापरून
-एक साधा ML model train करतो आणि दोन files तयार करतो:
-
-- resume_classifier.joblib   (Logistic Regression classifier)
-- embed_model.joblib         (sentence-transformers embedding model)
-
-नंतर आपण हे app.py मध्ये वापरून
-नव्या resume साठी selected / rejected predict करू.
+Phase A - Resume Classification Model Training
+This script trains a simple ML model using 20
+resumes (PDF/DOCX) + labels.csv and creates two
+files: resume_classifier.joblib (Logistic Regression
+classifier) embed_model.joblib (sentence-
+transformers embedding model) We will then use
+this in app.py to predict selected/rejected for a
+new resume.
 """
 
 import os
